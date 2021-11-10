@@ -14,7 +14,9 @@ def escolher_palavra
 	palavra
 end
 
-def pedir_chute
+def pedir_chute(chutes, erros)
+	puts "Chutes até agora: #{chutes}"
+	puts "Erros até agora: #{erros}"
 	puts "Agora insira uma letra ou uma palavra: "
 	chute = gets.strip
 	chute
@@ -23,40 +25,44 @@ end
 def iniciar_jogo
 	da_boas_vindas
 	palavra = escolher_palavra
-	acertos = []
-	erros = []
-	pontos = 1000
+	chutes = []
+	erros = 0
+	pontos = 0
 	tentativas = 5
 	
 	for tentativa in 1..tentativas
 		puts "Tentativa #{tentativa}"
-		puts "Acertos até agora: #{acertos}"
-		puts "Erros até agora: #{erros}"
-		chute = pedir_chute 
+		chute = pedir_chute(chutes, erros)
+		if chutes.include? chute
+			puts "Você já chutou #{chute}"
+			next
+		end
+		chutes << chute 
 		chutou_uma_letra = chute.size == 1
 
 		if chutou_uma_letra
 			letra_procurada = chute[0]
 			total_encontrado = palavra.count letra_procurada
 			if total_encontrado == 0
-				erros << letra_procurada
+				erros += 1
 				puts "Você não encontrou nenhuma letra."
-				pontos -= 200
+				pontos -= 30
 			else
-				acertos << letra_procurada
 				puts "Você encontrou #{total_encontrado} letras."
+				pontos += 100
 			end
 		else
 			if palavra == chute
 				puts "Parabéns, você acertou!"
+				pontos = 500
 				break
 			else
-				pontos -= 200
+				pontos -= 30
 				puts "Não foi dessa vez... tente novamente"
 			end
 		end
 	end
-puts "Você fez #{pontos}."
+puts "Você fez #{pontos} pontos."
 end
 
 def nao_quer_jogar?
