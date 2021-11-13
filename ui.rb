@@ -9,15 +9,40 @@ end
 def escolher_palavra
 	puts "Escolhendo uma palavra..."
 	palavra = "programador"
-	puts "A palavra escolhida tem #{palavra.size} letras, boa sorte!"
+  	puts "A palavra escolhida tem #{palavra.size} letras, boa sorte!"
 	puts "\n"
 	palavra
 end
 
-def pedir_chute(chutes, erros)
-	puts "Chutes até agora: #{chutes}"
-	puts "Erros até agora: #{erros}"
-	puts "Agora insira uma letra ou uma palavra: "
-	chute = gets.strip
-	chute
+def pedir_chute(chutes, erros, tentativa, mascara)
+  	puts "Tentativa #{tentativa}"
+  	puts "Palavra: #{mascara}"
+  	puts "Chutes até agora: #{chutes}"
+  	puts "Agora insira uma letra ou uma palavra: "
+  	chute = gets.strip
+  	chute
+end
+
+def aviso_chute_repetido(chute)
+  	puts "Você já chutou #{chute}"
+end
+
+def aviso_palavra_encontrada
+	puts "Parabéns, você acertou!"
+end
+
+def aviso_palavra_nao_encontrada
+  	puts "Não foi dessa vez... tente novamente"
+end
+
+def aviso_pontuacao(pontos)
+  	puts "Você fez #{pontos} pontos."
+end
+
+def aviso_jogar_novamente
+  	puts "Deseja jogar novamente? (S/N)"
+end
+
+def aviso_jogo_finalizado
+  	puts "Jogo finalizado"
 end

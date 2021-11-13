@@ -1,5 +1,17 @@
 require_relative 'ui'
 
+def palavra_mascarada(palavra, chutes)
+	mascara = ""
+	for letra in palavra.chars
+		if chutes.include? letra
+    		mascara += letra
+    	else
+    		mascara += "_"
+    	end
+	end
+  	mascara
+end
+
 def iniciar_jogo
 	da_boas_vindas
 	palavra = escolher_palavra
@@ -8,13 +20,15 @@ def iniciar_jogo
 	pontos = 0
 	tentativas = 5
 	
-	for tentativa in 1..tentativas
-		puts "Tentativa #{tentativa}"
-		chute = pedir_chute(chutes, erros)
+  for tentativa in 1..tentativas
+	mascara = palavra_mascarada(palavra, chutes)
+    chute = pedir_chute(chutes, erros, tentativa, mascara)
+    
 		if chutes.include? chute
-			puts "Você já chutou #{chute}"
+			aviso_chute_repetido(chute)
 			next
-		end
+    	end
+    
 		chutes << chute 
 		chutou_uma_letra = chute.size == 1
 
@@ -23,28 +37,26 @@ def iniciar_jogo
 			total_encontrado = palavra.count letra_procurada
 			if total_encontrado == 0
 				erros += 1
-				puts "Você não encontrou nenhuma letra."
 				pontos -= 30
 			else
-				puts "Você encontrou #{total_encontrado} letras."
 				pontos += 100
 			end
 		else
 			if palavra == chute
-				puts "Parabéns, você acertou!"
+				aviso_palavra_encontrada
 				pontos = 500
 				break
 			else
 				pontos -= 30
-				puts "Não foi dessa vez... tente novamente"
+				aviso_palavra_nao_encontrada
 			end
 		end
 	end
-puts "Você fez #{pontos} pontos."
+aviso_pontuacao(pontos)
 end
 
 def nao_quer_jogar?
-	puts "Deseja jogar novamente? (S/N)"
+	aviso_jogar_novamente
 	quer_jogar = gets.strip
 	quer_jogar.upcase == "N"
 end
@@ -52,7 +64,7 @@ end
 loop do 
 	iniciar_jogo
 	if nao_quer_jogar?
-		puts "Jogo finalizado"
+		aviso_jogo_finalizado
 		break
 	end
 end
