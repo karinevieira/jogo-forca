@@ -34,33 +34,33 @@ def iniciar_jogo
     mascara = palavra_mascarada(palavra, chutes)
     chute = pedir_chute(chutes, erros, tentativa, mascara)
     
-	if chutes.include? chute
-	  aviso_chute_repetido(chute)
-	  next
+	  if chutes.include? chute
+	    aviso_chute_repetido(chute)
+	    next
     end
     
-	chutes << chute 
-	chutou_uma_letra = chute.size == 1
+	  chutes << chute 
+	  chutou_uma_letra = chute.size == 1
 
-	if chutou_uma_letra
-	  letra_procurada = chute[0]
-	  total_encontrado = palavra.count letra_procurada
-	  if total_encontrado == 0
-		erros += 1
-		pontos -= 30
+	  if chutou_uma_letra
+	    letra_procurada = chute[0]
+	    total_encontrado = palavra.count letra_procurada
+	    if total_encontrado == 0
+		    erros += 1
+		    pontos -= 30
+	    else
+		    pontos += 100
+	    end
 	  else
-		pontos += 100
+	    if palavra == chute
+		    aviso_palavra_encontrada
+		    pontos = 500
+		    break
+	    else
+		    pontos -= 30
+		    aviso_palavra_nao_encontrada
+	    end
 	  end
-	else
-	  if palavra == chute
-		aviso_palavra_encontrada
-		pontos = 500
-		break
-	  else
-		pontos -= 30
-		aviso_palavra_nao_encontrada
-	  end
-	end
   end
 aviso_pontuacao(pontos)
 end
@@ -75,6 +75,6 @@ loop do
   iniciar_jogo
   if nao_quer_jogar?
     aviso_jogo_finalizado
-	break
+	  break
   end
 end
