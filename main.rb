@@ -5,7 +5,7 @@ def escolher_palavra
   palavras = File.read("dicionario.txt")
   todas_as_palavras = palavras.split "\n"
   numero_escolhido = rand(todas_as_palavras.size)
-  palavra = todas_as_palavras[numero_escolhido]
+  palavra = todas_as_palavras[numero_escolhido].downcase
   aviso_palavra_escolhida(palavra)
   palavra
 end
@@ -22,7 +22,18 @@ def palavra_mascarada(palavra, chutes)
   mascara
 end
 
-def iniciar_jogo
+def salva_rank(nome, pontos_totais)
+  conteudo = "#{nome}\n#{pontos_totais}"
+  File.write "rank.txt", conteudo
+end
+
+def ler_rank
+  arquivo = File.read("rank.txt")
+  dados = arquivo.split "\n"
+end
+
+nome = da_boas_vindas
+def iniciar_jogo(nome)
   da_boas_vindas
   palavra = escolher_palavra
   chutes = []
@@ -63,6 +74,7 @@ def iniciar_jogo
 	  end
   end
 aviso_pontuacao(pontos)
+pontos
 end
 
 def nao_quer_jogar?
@@ -71,9 +83,17 @@ def nao_quer_jogar?
   quer_jogar.upcase == "N"
 end
 
+pontos_totais = 0
 loop do 
-  iniciar_jogo
+  pontos_totais += iniciar_jogo(nome)
+  aviso_pontos_totais(pontos_totais)
+  
+  if ler_rank[1].to_i < pontos_totais
+    salva_rank(nome, pontos_totais)
+  end
+
   if nao_quer_jogar?
+    aviso_campeao_atual(ler_rank)
     aviso_jogo_finalizado
 	  break
   end
